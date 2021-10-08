@@ -14,8 +14,12 @@ namespace LR8
 {
     public partial class Form1 : Form
     {
-        public class Figure
+        public class Figure : IMyObservable
         {
+            public List<IMyObserver> _obs;
+
+
+
             public int LineWidth = 2;
             public Color LineColor = Color.Black;
             public int x = 0;
@@ -43,6 +47,27 @@ namespace LR8
             public virtual void Load(List<string> _stream) { }
 
 
+            public void AddObserver(IMyObserver o)
+            {
+                _obs.Add(o);
+            }
+
+            public void RemoveObserver(IMyObserver o)
+            {
+                _obs.Remove(o);
+            }
+
+            public void NotifyCreate()
+            {
+                for (int i = 0; i < _obs.Count; ++i)
+                    _obs[i].UpdateCreate(this);
+            }
+
+            public void NotifyDelete()
+            {
+                for (int i = 0; i < _obs.Count; ++i)
+                    _obs[i].UpdateDelete(this);
+            }
         }
 
         public class CGroup : Figure
@@ -126,7 +151,7 @@ namespace LR8
 
             public override void Save(StreamWriter _stream)
             {
-                _stream.WriteLine("G\n");
+                _stream.WriteLine("G");
                 for (int i = 0; i < _count; i++)
                     _figures[i].Save(_stream);
                 _stream.WriteLine("E");
@@ -520,14 +545,18 @@ namespace LR8
                 this.y = Int32.Parse(subs[1]);
                 this.H = Int32.Parse(subs[2]);
                 FillColor = ColorTranslator.FromHtml(subs[3]);
+                p[0].X = x;
+                p[0].Y = y - 2 * H / 3;
+                p[1].X = x - Convert.ToInt32(H / Math.Sqrt(3));
+                p[1].Y = y + 1 * H / 3;
+                p[2].X = x + Convert.ToInt32(H / Math.Sqrt(3));
+                p[2].Y = y + 1 * H / 3;
             }
 
             //Деструктор
             ~Triangle() { }
         }
 
-
-
-
+      
     }
 }

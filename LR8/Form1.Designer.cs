@@ -41,6 +41,7 @@ namespace LR8
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonRead = new System.Windows.Forms.Button();
+            this.treeView1 = new System.Windows.Forms.TreeView();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -162,11 +163,20 @@ namespace LR8
             this.buttonRead.UseVisualStyleBackColor = true;
             this.buttonRead.Click += new System.EventHandler(this.buttonRead_Click);
             // 
+            // treeView1
+            // 
+            this.treeView1.Location = new System.Drawing.Point(1262, 1);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(477, 565);
+            this.treeView1.TabIndex = 2;
+            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1230, 628);
+            this.ClientSize = new System.Drawing.Size(1778, 636);
+            this.Controls.Add(this.treeView1);
             this.Controls.Add(this.buttonRead);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.buttonCGroup);
@@ -202,6 +212,7 @@ namespace LR8
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.Button buttonRead;
+        private System.Windows.Forms.TreeView treeView1;
     }
 }
 

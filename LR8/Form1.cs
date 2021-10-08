@@ -245,5 +245,12 @@ namespace LR8
             storage.ReadFigures("Figures.txt");
             RedrawFigures(ref storage);//перерисовываем 
         }
+
+        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+
+        }
+
+
     }
 }

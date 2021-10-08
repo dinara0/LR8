@@ -32,6 +32,7 @@ namespace LR8
             public void set_value(ref Figure value)//добавление объекта в хранилище
             {
                 objects[size] = value;//добавляем объект в свободную ячейку
+                objects[size].NotifyCreate();
                 size++;
                 return;
             }
@@ -52,12 +53,13 @@ namespace LR8
 
                     return;
                 }
-                for (int i = index + 1, j = index; i <= this.size; i++, j++)
+                for (int i = index + 1, j = index; i <= size; i++, j++)
                 {
 
                     objects[j] = objects[i];//смещаем элементы, "затирая" элемент по индексу
                 }
-                this.size--;
+                objects[index].NotifyDelete();
+                size--;
             }
 
             public bool Empty(int CountElem)
@@ -78,7 +80,7 @@ namespace LR8
             }
             public void ReadFigures(string filename)//чтение из текстового файла
             {
-                List<string> list = File.ReadAllLines("C:/Users/User/Desktop/учеба/2 КУРС/ООП/1/LR8/LR8/bin/Debug/Figures.txt").ToList();
+                List<string> list = File.ReadAllLines("C:/Users/User/Desktop/учеба/2 КУРС/ООП/LR8/LR8/bin/Debug/Figures.txt").ToList();
                 int count = Int32.Parse(list[0]);
                 list.RemoveAt(0);
                 for (int i = 0; i < count; ++i)
