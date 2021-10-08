@@ -16,6 +16,7 @@ namespace LR8
     {
         class Array
         {
+            protected TreeViewer observers;//создаю объект класса TreeViewer
             public Figure[] objects; // указатель на указатель объекта 
             private int maxsize = 0;//размер массива максимальный
             private int size = 0; // размер массива
@@ -32,8 +33,9 @@ namespace LR8
             public void set_value(ref Figure value)//добавление объекта в хранилище
             {
                 objects[size] = value;//добавляем объект в свободную ячейку
-                objects[size].NotifyCreate();
+               // objects[size].NotifyCreate();
                 size++;
+                Notify();
                 return;
             }
 
@@ -58,8 +60,9 @@ namespace LR8
 
                     objects[j] = objects[i];//смещаем элементы, "затирая" элемент по индексу
                 }
-                objects[index].NotifyDelete();
+              //  objects[index].NotifyDelete();
                 size--;
+                Notify();
             }
 
             public bool Empty(int CountElem)
@@ -92,6 +95,56 @@ namespace LR8
 
 
             }
+            public void OnSubjectChanged(TreeViewer tree)
+            {
+                int index = 0;
+                foreach (TreeNode i in tree.TreeView.Nodes[0].Nodes)
+                {
+                    ProcessNode(i, index);
+                    index++;
+                }
+
+            }
+
+            public bool ProcessNode(TreeNode i, int index)
+            {
+                if (i.IsSelected)
+                {
+                    //Current.Shape.isCur = true;
+                    objects[index].IsSelect(true);
+                    return true;
+                }
+                if (i.Nodes.Count > 0)
+                {
+                    foreach (TreeNode tn in i.Nodes)
+                        if (ProcessNode(tn, 0))
+                            return true;
+                }
+                objects[index].IsSelect(false);
+                return false;
+            }
+
+            public void AddObservers(TreeViewer t)
+            {
+                observers = t;
+            }
+
+            protected void Notify()
+            {
+                if (observers != null)
+                    observers.OnSubjectChanged(this);
+            }
+
+           /* public void UpdateStickyShapes(Figure s)
+            {
+                Array t = new Array(100);
+                // Set_current_first();
+                // for (bool cond = !Is_empty(); cond; cond = Step_forward())
+                for (int i = 0; i < 100; i++) 
+                    if (CurShape != s && s.CloseTo(CurShape))
+                        t.Push_back(CurShape);
+                s.ChangeObservers(t);
+            }*/
         };
 
 

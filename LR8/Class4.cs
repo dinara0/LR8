@@ -31,5 +31,74 @@ namespace LR8
             // Уведомляет всех наблюдателей о событии.
             void Notify();
         }
+
+        class TreeViewer
+        {
+            private TreeView treeView;
+
+            private Array observers;
+
+            public TreeViewer(TreeView tree)
+            {
+                treeView = tree;
+            }
+
+            public void OnSubjectChanged(Array L)
+            {
+                treeView.BeginUpdate();
+                treeView.Nodes[0].Nodes.Clear();
+                //int i = 0;
+               // L.Set_current_first();
+                for (int i = 0;i<observers.get_count();i++)
+                {
+                    TreeNode node = new TreeNode();
+                    treeView.Nodes[0].Nodes.Add(node);
+                    if (L.get_value(i) != null)
+                        treeView.SelectedNode = node;
+                    ProcessNode(treeView.Nodes[0].Nodes[i++],
+                        L.get_value(i));
+
+                }
+                treeView.EndUpdate();
+            }
+
+            protected void ProcessNode(TreeNode tn, Figure a)//изменить 
+            {
+                if (a != null)
+                    tn.Text = a.ToString().Substring(8);
+                CGroup gr = a as CGroup;
+                if (gr != null) 
+                    for(int i=0;i<gr.Count;i++)
+                    {
+                        tn.Nodes.Add(new TreeNode());
+                        ProcessNode(tn.Nodes[i++], gr.FFigure[i]);
+                    }
+
+            }
+
+            public void AddObs(Array a)
+            {
+                observers = a;
+            }
+
+            private void Notify()
+            {
+                if (observers != null)
+                    observers.OnSubjectChanged(this);
+            }
+
+            public void SelectedChanged()
+            {
+                Notify();
+            }
+
+            public TreeView TreeView { get => treeView; }
+
+         /*   internal Array Array
+            {
+                get => default(Array);
+               
+            }*/
+        }
     }
 }

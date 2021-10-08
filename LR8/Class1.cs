@@ -14,9 +14,40 @@ namespace LR8
 {
     public partial class Form1 : Form
     {
-        public class Figure : IMyObservable
+        abstract class Sticky
         {
-            public List<IMyObserver> _obs;
+            public bool sticky = false;
+            protected Array obs = null;
+            protected PointF min, max;
+
+            protected PointF center;
+            protected double r;
+
+            public PointF Center { get => center; }
+
+            public void Switch()
+            {
+                if (sticky)
+                    sticky = false;
+                else sticky = true;
+            }
+
+            public void ChangeObservers(Array a)
+            {
+                obs = a;
+            }
+
+            public void AddObserver(Figure s)
+            {
+                obs.set_value(ref s);
+            }
+
+            public virtual PointF Min { get => min; }
+            public virtual PointF Max { get => max; }
+        }
+        public class Figure //IMyObservable
+        {
+            //public List<IMyObserver> _obs;
 
 
 
@@ -27,6 +58,7 @@ namespace LR8
             public Color color = Color.Black; //Установка цвета по умолчанию
             //public bool isSelect = false;
             protected bool isSelect = false;
+            
             public virtual void IsSelect(bool fl) { }//проверка на попадание
                                                      // public bool Is_Drawn = true; //Проверка на отрисовку окружности на панели
             public virtual bool IsSelect() { return isSelect; }//проверка на попадание
@@ -47,27 +79,7 @@ namespace LR8
             public virtual void Load(List<string> _stream) { }
 
 
-            public void AddObserver(IMyObserver o)
-            {
-                _obs.Add(o);
-            }
 
-            public void RemoveObserver(IMyObserver o)
-            {
-                _obs.Remove(o);
-            }
-
-            public void NotifyCreate()
-            {
-                for (int i = 0; i < _obs.Count; ++i)
-                    _obs[i].UpdateCreate(this);
-            }
-
-            public void NotifyDelete()
-            {
-                for (int i = 0; i < _obs.Count; ++i)
-                    _obs[i].UpdateDelete(this);
-            }
         }
 
         public class CGroup : Figure
@@ -75,6 +87,8 @@ namespace LR8
             private int _maxcount;// максимальное количество объектов в группе
             private int _count;// текущее количество объектов в группе
             private Figure[] _figures;
+            public Figure[] FFigure { get => _figures; }
+            public int Count { get => _count; }
             public CGroup(int maxcount)//конструктор
             {
                 _figures = new Figure[maxcount];

@@ -17,7 +17,12 @@ namespace LR8
             InitializeComponent();
             g = panel1.CreateGraphics();
             colorDialog1.FullOpen = true;
+            tree = new TreeViewer(treeView1);
+            storage.AddObservers(tree);
+            tree.AddObs(storage);
+            treeView1.Nodes.Add(new TreeNode("Array"));
         }
+        TreeViewer tree;
         bool fl = false;// нужно для отрисовки линии
         bool select = false;// для выделения объекта
         Graphics g;
@@ -28,7 +33,7 @@ namespace LR8
         protected Point p1 = new Point(0, 0);
         protected Point p2 = new Point(0, 0);
         protected Color ChooseColor = Color.LightBlue;// цыет объектов по умолчанию
-
+        bool treeClicked = false;// нажатие на Treeview
         //Инициализация необходимых переменных
         Array storage = new Array(100);
 
@@ -251,6 +256,20 @@ namespace LR8
 
         }
 
+        //Вызывает синхронизацию дерева с хранилищем
+        private void TeeViewSelectedChanged(object sender, TreeViewEventArgs e)
+        {
+            /*if (treeClick)
+            {
+                tree.SelectedChanged();
+                RedrawFigures(ref storage);//перерисовываем 
+                treeClick = false;
+            }*/
+        }
+        private void ObserveTree_MouseClick(object sender, MouseEventArgs e)
+        {
+          //  treeClick = true;
+        }
 
     }
 }
