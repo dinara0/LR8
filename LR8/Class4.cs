@@ -12,8 +12,7 @@ using System.Windows.Forms;
 
 namespace LR8
 {
-    public partial class Form1 : Form
-    {
+    
         public interface IObserver
         {
             // Получает обновление от издателя
@@ -32,7 +31,7 @@ namespace LR8
             void Notify();
         }
 
-        class TreeViewer
+        public class TreeViewer
         {
             private TreeView treeView;
 
@@ -47,15 +46,15 @@ namespace LR8
             {
                 treeView.BeginUpdate();
                 treeView.Nodes[0].Nodes.Clear();
-                //int i = 0;
-               // L.Set_current_first();
+                int j = 0;
+            
                 for (int i = 0;i<observers.get_count();i++)
                 {
                     TreeNode node = new TreeNode();
                     treeView.Nodes[0].Nodes.Add(node);
                     if (L.get_value(i) != null)
                         treeView.SelectedNode = node;
-                    ProcessNode(treeView.Nodes[0].Nodes[i++],
+                    ProcessNode(treeView.Nodes[0].Nodes[j++],
                         L.get_value(i));
 
                 }
@@ -65,13 +64,16 @@ namespace LR8
             protected void ProcessNode(TreeNode tn, Figure a)//изменить 
             {
                 if (a != null)
-                    tn.Text = a.ToString().Substring(8);
+            {
+                tn.Text = a.ToString().Substring(4);
+            }
+            int j = 0;   
                 CGroup gr = a as CGroup;
                 if (gr != null) 
                     for(int i=0;i<gr.Count;i++)
                     {
                         tn.Nodes.Add(new TreeNode());
-                        ProcessNode(tn.Nodes[i++], gr.FFigure[i]);
+                        ProcessNode(tn.Nodes[j++], gr.FFigure(i));
                     }
 
             }
@@ -100,5 +102,5 @@ namespace LR8
                
             }*/
         }
-    }
+    
 }

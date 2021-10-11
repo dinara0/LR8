@@ -36,6 +36,7 @@ namespace LR8
         bool treeClicked = false;// нажатие на Treeview
         //Инициализация необходимых переменных
         Array storage = new Array(100);
+        bool stickyF = false;//липкий объект
 
 
         //Функция обработки получения координат XY события передвижения курсора по панели
@@ -129,18 +130,20 @@ namespace LR8
 
         private void panel1_MouseDown_1(object sender, MouseEventArgs e)
         {
+            treeClicked = false;
             if (select)//если нажата кнопка выделения объекта/ов
             {
                 int check = CheckFigure(ref storage, storage.get_count(), e.X, e.Y);// вызываем функцию,
                                                                                     // возвращающую индекс объекта, на который кликнула мышь
                 if (check != -1)// если кликнули на объект
                 {
-                    storage.objects[check].LineColor = Color.Red;// цвет объекта меняется на красный
-                    storage.objects[check].IsSelect(true);
+                   // цвет объекта меняется на красный
+                    storage.SelectF(check, true);
+                   
                     RedrawFigures(ref storage);// перерисовывем
                 }
                 //Если нажат ctrl, выделяем несколько объектов
-                if (Control.ModifierKeys != Keys.Control)
+                if (Control.ModifierKeys != Keys.Shift)
                     select = false;
             }
             else
@@ -182,8 +185,8 @@ namespace LR8
                 SelectionRemove(ref storage);
 
                 //Устанавливаем цвет выделяемого объекта на новый добавленный
-                storage.objects[storage.get_count() - 1].LineColor = Color.Red;
-                storage.objects[storage.get_count() - 1].IsSelect(true);
+                //storage.objects[storage.get_count() - 1].LineColor = Color.Red;
+                storage.SelectF(storage.get_count() - 1, true);
 
                 //Отрисовываем фигуру
                 figure.Draw(g);
@@ -231,6 +234,8 @@ namespace LR8
                                     storage.objects[i].Resize(-1);
                                 break;
                         }
+                        if (s.sticky)
+                            storage.UpdateStickyShapes(s);
                         RedrawFigures(ref storage);//перерисовываем 
                     }
                 }
@@ -253,23 +258,32 @@ namespace LR8
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-
-        }
-
-        //Вызывает синхронизацию дерева с хранилищем
-        private void TeeViewSelectedChanged(object sender, TreeViewEventArgs e)
-        {
-            /*if (treeClick)
+            if (treeClicked)
             {
                 tree.SelectedChanged();
                 RedrawFigures(ref storage);//перерисовываем 
-                treeClick = false;
-            }*/
-        }
-        private void ObserveTree_MouseClick(object sender, MouseEventArgs e)
-        {
-          //  treeClick = true;
+                treeClicked = false;
+            }
         }
 
+        //Вызывает синхронизацию дерева с хранилищем
+   
+        private void ObserveTree_MouseClick(object sender, MouseEventArgs e)
+        {
+
+           treeClicked = true;
+        }
+
+        private void treeView1_MouseClick(object sender, MouseEventArgs e)
+        {
+            treeClicked = true;
+        }
+
+        private void buttonSticky_Click(object sender, EventArgs e)
+        {
+            if (stickyF)
+                stickyF = false;
+            else stickyF = true;
+        }
     }
 }

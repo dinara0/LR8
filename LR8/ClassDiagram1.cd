@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Sticky">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAEAAAABBQIIIAEAAAAAAAAAAAAIAAAAABAAAIAAA=</HashCode>
+      <FileName>AShape.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Figure">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <InheritanceLine Type="OOPlab6.Sticky" FixedToPoint="true">
+      <Path>
+        <Point X="2" Y="3.537" />
+        <Point X="2.5" Y="3.537" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAgIAgAIAIAgAAAACABAAhAAAAFADAQgggAAEQABA=</HashCode>
+      <FileName>AShape.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOPlab6.DoublyNode">
+    <Position X="2.5" Y="8.25" Width="1.5" />
+    <AssociationLine Name="AShape" Type="OOPlab6.AShape" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.938" Y="8.25" />
+        <Point X="2.938" Y="7.473" />
+        <Point X="2.938" Y="7.473" />
+        <Point X="2.938" Y="6.098" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAIAIABAA=</HashCode>
+      <FileName>DoublyLinkedList.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AShape" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="OOPlab6.DoublyLinkedList">
+    <Position X="8" Y="8.25" Width="1.5" />
+    <InheritanceLine Type="OOPlab6.ShapeList" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.5" Y="9.125" />
+        <Point X="9.5" Y="9.125" />
+      </Path>
+    </InheritanceLine>
+    <AssociationLine Name="DoublyNode" Type="OOPlab6.DoublyNode" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.75" Y="8.25" />
+        <Point X="8.75" Y="7.814" />
+        <Point X="3.438" Y="7.814" />
+        <Point X="3.438" Y="8.25" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="CGroup" Type="OOPlab6.CGroup" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.688" Y="10.444" />
+        <Point X="8.688" Y="13.261" />
+        <Point X="12.375" Y="13.261" />
+        <Point X="12.375" Y="3.125" />
+        <Point X="12" Y="3.125" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABABAIAAAAAAAAAAAAAAABAAAAgABAIAMA=</HashCode>
+      <FileName>DoublyLinkedList.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DoublyNode" />
+      <Property Name="TreeViewer" />
+      <Property Name="CGroup" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="OOPlab6.Polygon">
+    <Position X="4.5" Y="3.25" Width="1.5" />
+    <InheritanceLine Type="OOPlab6.AShape" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4" Y="2.875" />
+        <Point X="5.312" Y="2.875" />
+        <Point X="5.312" Y="3.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAkIAAAAAQAAAAAADABABBAAAAEAAAAAAAAAEQABI=</HashCode>
+      <FileName>Polygon.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOPlab6.CCircle">
+    <Position X="6.5" Y="2" Width="1.5" />
+    <InheritanceLine Type="OOPlab6.AShape" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4" Y="2.25" />
+        <Point X="6.5" Y="2.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAABAAAAAAEACABAABAAAAEAAAAAAAAAEQYRA=</HashCode>
+      <FileName>CCircle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOPlab6.CSegment">
+    <Position X="8.5" Y="1.25" Width="1.5" />
+    <InheritanceLine Type="OOPlab6.AShape" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4" Y="1.562" />
+        <Point X="6.25" Y="1.562" />
+        <Point X="6.25" Y="1.562" />
+        <Point X="8.5" Y="1.562" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAgKAAABAAQAAAEACApAABAAAAEAAAAEAAIAEQAJA=</HashCode>
+      <FileName>CSegment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOPlab6.CGroup">
+    <Position X="10.5" Y="0.5" Width="1.5" />
+    <InheritanceLine Type="OOPlab6.AShape" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4" Y="0.875" />
+        <Point X="10.5" Y="0.875" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAIEgIAAAAAAAgAAAACABAQhAAAEFAAAAAAgAAEQBBA=</HashCode>
+      <FileName>CGroup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOPlab6.ShapeList">
+    <Position X="10.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIEBIAgAAgRYAABACAAAQAgAAAAQBAkAAWAABkAgE=</HashCode>
+      <FileName>ShapeList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OOPlab6.TreeViewer">
+    <Position X="5" Y="8.25" Width="1.5" />
+    <AssociationLine Name="DoublyLinkedList" Type="OOPlab6.DoublyLinkedList" FixedFromPoint="true">
+      <Path>
+        <Point X="6.5" Y="9.688" />
+        <Point X="8" Y="9.688" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AgEIAEAAAAAAAAAAAAAAAAAAAAAAACBAAAAgAAIAAEA=</HashCode>
+      <FileName>Tree.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DoublyLinkedList" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
