@@ -85,7 +85,15 @@ namespace LR8
             reader.RemoveAt(0);
             return f;
         }
+        private void UpdateTB(Figure s)
+        {
+            if (s == null)
+                return;
+            if (s.sticky)
+                textBox1.Text = "Sticky";
+            else textBox1.Text = "Not sticky";
+        }
 
-     
+
     }
 }

@@ -139,7 +139,7 @@ namespace LR8
                 {
                    // цвет объекта меняется на красный
                     storage.SelectF(check, true);
-                   
+                    UpdateTB(storage.get_value(check));
                     RedrawFigures(ref storage);// перерисовывем
                 }
                 //Если нажат ctrl, выделяем несколько объектов
@@ -175,6 +175,7 @@ namespace LR8
                     return;
                 //Добавляем окружность в хранилище
                 storage.set_value(ref figure);
+                UpdateTB(storage.get_value(storage.get_count() - 1));
                 // включаем возможность взаимодействия с кнопками
                 buttonTriangle.Enabled = true;
                 buttonLine.Enabled = true;
@@ -233,9 +234,13 @@ namespace LR8
                                 if (storage.objects[i].IsBlackboard())
                                     storage.objects[i].Resize(-1);
                                 break;
+                          
                         }
-                        if (s.sticky)
-                            storage.UpdateStickyShapes(s);
+                        if (storage.get_value(i).sticky)
+                        {//если фигура липкая
+                            storage.UpdateStickyShapes(storage.get_value(i), g);
+                            
+                        }
                         RedrawFigures(ref storage);//перерисовываем 
                     }
                 }
@@ -279,11 +284,17 @@ namespace LR8
             treeClicked = true;
         }
 
-        private void buttonSticky_Click(object sender, EventArgs e)
+        private void buttonSticky_Click(object sender, EventArgs e)//задаем липкий объект
         {
             if (stickyF)
                 stickyF = false;
             else stickyF = true;
+            for (int i = 0; i < storage.get_count(); ++i)
+            { //Если объект существует и окрашен в цвет выбранных объектов,то происходит..
+                if (storage.Empty(i) == false && storage.get_value(i).IsSelect())
+                    storage.get_value(i).Switch();
+                    UpdateTB(storage.get_value(i));
+            }
         }
     }
 }

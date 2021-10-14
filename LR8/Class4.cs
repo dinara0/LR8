@@ -13,23 +13,7 @@ using System.Windows.Forms;
 namespace LR8
 {
     
-        public interface IObserver
-        {
-            // Получает обновление от издателя
-            void Update(ISubject subject);
-        }
-
-        public interface ISubject
-        {
-            // Присоединяет наблюдателя к издателю.
-            void Attach(IObserver observer);
-
-            // Отсоединяет наблюдателя от издателя.
-          //  void Detach(IObserver observer);
-
-            // Уведомляет всех наблюдателей о событии.
-            void Notify();
-        }
+ 
 
         public class TreeViewer
         {

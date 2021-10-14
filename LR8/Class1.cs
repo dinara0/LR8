@@ -13,16 +13,11 @@ using System.Windows.Forms;
 namespace LR8
 {
 
-    public abstract class Sticky
+    public abstract class SObject
     {
         public bool sticky = false;
         protected Array obs = null;
-        protected PointF min, max;
 
-        protected PointF center;
-        protected double r;
-
-        public PointF Center { get => center; }
 
         public void Switch()
         {
@@ -41,10 +36,9 @@ namespace LR8
             obs.set_value(ref s);
         }
 
-        public virtual PointF Min { get => min; }
-        public virtual PointF Max { get => max; }
+ 
     }
-    public class Figure : Sticky
+    public class Figure : SObject
     {
 
         public int LineWidth = 2;//толщина линии
@@ -54,6 +48,7 @@ namespace LR8
         public Color color = Color.Black; //Установка цвета по умолчанию
                                           //public bool isSelect = false;
         protected bool isSelect = false;
+        Graphics gr;
 
         public virtual void IsSelect(bool fl) { }//проверка на попадание
                                                  // public bool Is_Drawn = true; //Проверка на отрисовку окружности на панели
@@ -73,28 +68,61 @@ namespace LR8
 
         public virtual void Save(StreamWriter _stream) { }
         public virtual void Load(List<string> _stream) { }
-        /*  public virtual bool GetRegion(Figure s, Graphics g)//пересекаются ли фигуры (для липкого объекта)
-          {
-              var rgn = new Region(GetPath());
-              var rgn1 = new Region(s.GetPath());
-              rgn.Intersect(rgn1);
-              return rgn.IsEmpty(g);
-          }*/
-
-        public virtual bool CloseTo(Figure s)
+        public virtual bool GetRegion(Figure s, Graphics g)//пересекаются ли фигуры (для липкого объекта)
         {
-            double d = Math.Sqrt((center.X - s.Center.X) *
-                (center.X - s.Center.X) + (center.Y - s.Center.Y) *
-                (center.Y - s.Center.Y));
-            return (d <= r + s.r);
+            var rgn = new Region(GetPath());
+            var rgn1 = new Region(s.GetPath());
+            rgn.Intersect(rgn1);
+            return !(rgn.IsEmpty(g));
         }
 
+        public bool Notify(int dx,int dy)
+        {
+            if (obs == null) return false;
+            
+            for (int i = 0; i < obs.get_count(); i++)
+            obs.get_value(i).OnSubjectChanged(dx,dy);
+          
+            return true;
 
+        }
+        public virtual void OnSubjectChanged(int dx, int dy)
+        {
+            Move (dx, dy);
+        }
 
+        public bool Notify(int dx)
+        {
+            if (obs == null) return false;
 
+            for (int i = 0; i < obs.get_count(); i++)
+                obs.get_value(i).OnSubjectChanged(dx);
+            /*obs.Set_current_first();
+            for (bool cond = !obs.Is_empty(); cond;)
+            {
+                if (this.CloseTo(obs.CurShape))
+                    cond = obs.Step_forward();
+                else if (obs.Current == obs.Head)
+                {
+                    obs.Delete_current();
+                    cond = !obs.Is_empty();
+                }
+                else
+                {
+                    obs.Delete_current();
+                    cond = obs.Step_forward();
+                }
+            }*/
+            return true;
+
+        }
+        public virtual void OnSubjectChanged(int dx)
+        {
+            Resize(dx);
+        }
     }
 
-    public class CGroup : Figure
+        public class CGroup : Figure
     {
         private int _maxcount;// максимальное количество объектов в группе
         private int _count;// текущее количество объектов в группе
@@ -184,6 +212,14 @@ namespace LR8
                 _count++;
             }
         }
+        public override bool GetRegion(Figure s, Graphics g)
+        {
+            for (int i = 0; i < _count; i++)
+                if (_figures.get_value(i).GetRegion(s,g))
+                    return false;
+            return true;
+    
+        }
     }
 
     public class Circle : Figure
@@ -236,6 +272,7 @@ namespace LR8
         {
             x += a;
             y += b;
+            Notify(a,b);
         }
 
         public override bool IsBlackboard()
@@ -248,6 +285,7 @@ namespace LR8
         public override void Resize(int a)
         {
             D = D + 2 * a;
+            Notify(a);
         }
 
         public override void IsSelect(bool fl)
@@ -277,6 +315,13 @@ namespace LR8
             this.D = Int32.Parse(subs[2]);
             FillColor = ColorTranslator.FromHtml(subs[3]);
         }
+       /* public override bool CloseTo(Figure s)
+        {
+            double d = Math.Sqrt((center.X - s.Center.X) *
+                (center.X - s.Center.X) + (center.Y - s.Center.Y) *
+                (center.Y - s.Center.Y));
+            return (d <= r + s.r);
+        }*/
         //Деструктор
         ~Circle() { }
     }
@@ -320,6 +365,7 @@ namespace LR8
         {
             Point1 = new PointF(Point1.X + a, Point1.Y + b);
             Point2 = new PointF(Point2.X + a, Point2.Y + b);
+            Notify(a, b);
         }
         public override bool IsBlackboard()
         {
@@ -338,6 +384,7 @@ namespace LR8
             //Новые координаты отрезка
             Point1 = new PointF(Point1.X - v.X * a, Point1.Y - v.Y * a);
             Point2 = new PointF(Point2.X + v.X * a, Point2.Y + v.Y * a);
+            Notify(a);
         }
         public override void IsSelect(bool fl)
         {
@@ -418,6 +465,7 @@ namespace LR8
         {
             x = x + a;
             y = y + b;
+            Notify(a, b);
         }
         public override bool IsBlackboard()
         {
@@ -428,6 +476,7 @@ namespace LR8
         public override void Resize(int a)
         {
             A = A + a;
+            Notify(a);
         }
 
         public override void IsSelect(bool fl)
@@ -519,6 +568,7 @@ namespace LR8
             p[1].Y = p[1].Y + b;
             p[2].X = p[2].X + a;
             p[2].Y = p[2].Y + b;
+            Notify(a, b);
         }
 
         public override bool IsBlackboard()
@@ -537,6 +587,7 @@ namespace LR8
             p[1].Y = y + 1 * H / 3;
             p[2].X = x + Convert.ToInt32(H / Math.Sqrt(3));
             p[2].Y = y + 1 * H / 3;
+            Notify(a);
 
         }
         public override void IsSelect(bool fl)

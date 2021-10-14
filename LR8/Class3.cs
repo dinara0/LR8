@@ -16,6 +16,7 @@ namespace LR8
     public class Array
     {
         protected TreeViewer observers;//создаю объект класса TreeViewer
+        protected Figure obsS;// подписчик липкого объекта
         public Figure[] objects; // указатель на указатель объекта 
         private int maxsize = 0;//размер массива максимальный
         private int size = 0; // размер массива
@@ -164,8 +165,9 @@ namespace LR8
             {
                 observers = t;
             }
+       
 
-            protected void Notify()
+        protected void Notify()
             {
                 if (observers != null)
                     observers.OnSubjectChanged(this);
@@ -173,12 +175,13 @@ namespace LR8
 
             public void UpdateStickyShapes(Figure s, Graphics g)
             {
-                Array t = new Array(100);
+             Array t = new Array(10);// создаем массив наблюдателей за объектом
+            
             // Set_current_first();
             // for (bool cond = !Is_empty(); cond; cond = Step_forward())
-            for (int i = 0; i < 100; i++)
-                if (s != objects[i] && s.CloseTo(objects[i]))
-                    t.set_value(ref objects[i]);                    
+            for (int i = 0; i < size; i++)
+                if (s != objects[i] && s.GetRegion(objects[i], g) )// если фигуры соприкасаются
+                    t.set_value(ref objects[i]);                 //добавляем фигуру, которая соприкасается с липкой фигурой в массив наблюдателей   
                 s.ChangeObservers(t);
             }
         
